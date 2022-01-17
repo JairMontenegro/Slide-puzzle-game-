@@ -24,7 +24,7 @@ function generatePuzzle(){
     for(let i =1;i <= size * size; i++){
         puzzle.push({
             value: i,
-            pisition: i,
+            position: i,
             x: (getCol(i) - 1) * 200 ,
             y: (getRow(i) - 1) * 200,
             disabled:false,
@@ -34,7 +34,7 @@ function generatePuzzle(){
 }
 
     function renderPuzzle() {
-        puzzleContainer.innerHTML = ''
+        puzzleContainer.innerHTML = ""
         for (let puzzleItem of puzzle) {
             if(puzzleItem.disabled) continue
             puzzleContainer.innerHTML += `
@@ -77,21 +77,20 @@ function generatePuzzle(){
         switch(e.key){
             case "ArrowLeft":
                 moveLeft()
-            break
+                 break
             case "ArrowRight":
                 moveRight()
-            break
+                 break
             case "ArrowUp":
                 moveUp()
-                
-            break         
+                break         
             case "ArrowDown":
                 moveDown()
             break
         }
         renderPuzzle()
     }
-
+    
     function moveLeft(){
         const emptyPuzzle = getEmptyPuzzle()
         const rightPuzzle= getRightPuzzle()
@@ -99,6 +98,7 @@ function generatePuzzle(){
             swapPositions(emptyPuzzle, rightPuzzle, true)
         }
     }
+
     function moveRight(){
         const emptyPuzzle = getEmptyPuzzle()
         const leftPuzzle= getLeftPuzzle()
@@ -120,7 +120,7 @@ function generatePuzzle(){
         }
     }
 
-    function swapPositions(firstPuzzle, secondPuzzle, isX = false ){
+    function swapPositions(firstPuzzle, secondPuzzle, isX = false){
         //position swapping 
         let temp = firstPuzzle.position
         firstPuzzle.position = secondPuzzle.position
@@ -140,6 +140,16 @@ function generatePuzzle(){
         }
     }
 
+    function getRightPuzzle(){
+        //Get the puzzle just right the empty puzzle
+        const emptyPuzzle = getEmptyPuzzle()
+        const isRightEdge = getCol(emptyPuzzle.position) === size
+        if(isRightEdge){
+            return null
+        }
+        const puzzle = getPuzzleByPos(emptyPuzzle.position + 1 )
+        return puzzle
+    }
     function getLeftPuzzle(){
         //Get the puzzle just left the empty puzzle
         const emptyPuzzle = getEmptyPuzzle()
@@ -147,24 +157,14 @@ function generatePuzzle(){
         if(isLeftEdge){
             return null
         }
-        const puzzle = getPuzzleByPos(emptyPuzzle.position + 1 )
-        return puzzle
-
-    }
-    function getRightPuzzle(){
-        //Get the puzzle just right the empty puzzle
-        const emptyPuzzle = getEmptyPuzzle()
-        const isRightEdge = getCol(emptyPuzzle.position)=== size
-        if(isRightEdge){
-            return null
-        }
         const puzzle = getPuzzleByPos(emptyPuzzle.position - 1 )
         return puzzle
+
     }
     function getAbovePuzzle(){
          //Get the puzzle just Above the empty puzzle
          const emptyPuzzle = getEmptyPuzzle()
-         const isTopEdge = getRow(emptyPuzzle.position)=== size
+         const isTopEdge = getRow(emptyPuzzle.position) === 1 
          if(isTopEdge){
              return null
          }
@@ -190,5 +190,4 @@ function generatePuzzle(){
     function getPuzzleByPos(pos){
         return puzzle.find((item) => item.position === pos)
     }
-
 
